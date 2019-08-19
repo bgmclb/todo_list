@@ -1,0 +1,121 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+
+
+.tamamlanmis-gorev{
+	text-decoration: line-through; 
+	color: green;
+}
+.cerceve{
+	width:300px;
+	margin:auto;
+	height:auto;
+	background: #C8E6C9   ;
+	padding:15px;
+	border-radius:15px;
+}
+input[type=text]{
+	width:75%;
+	padding:10px;
+	font-size:15px;
+	font-weight:bold;
+	margin-top:10px;
+	border-radius:5px;
+}
+input[type=button]{
+	width:70px;
+	padding:10px;
+	font-size:15px;
+	font-weight:bold;
+	border-radius:5px;
+}
+
+
+
+</style>
+<body>
+
+
+	<div class="cerceve">
+			<input type="text" id="gorev" placeholder="Görev ekleyin" oninput="butondegis()">
+			<input type="button" id="buton" value="Ekle">
+			<br><br>
+	
+			<div class="gorev_liste">
+			<span><b>Görev Listesi:</b></span><br><br>		
+			</div>
+	</div>
+
+	<script>
+		function butondegis(){		
+			//console.log("fonk girdi");			
+			
+					var value=$("#gorev").val();
+					//console.log("girilen: "+ value);		
+					if(value.length<3){
+						$("#buton").prop("disabled", true);
+						//console.log("buton:disable");
+					}
+					else{
+							$("#buton").prop("disabled", false);
+							//console.log("buton:enable");
+					}     			
+		};
+
+	var gorevler = new Array();
+	$(function(){
+		
+	var kayitli_veriler= JSON.parse(window.localStorage.getItem("gorevler"));
+	if(kayitli_veriler!=null)	gorevler=kayitli_veriler;
+				//console.log("kayitli_veriler: " + kayitli_veriler);
+	var gorev_sayisi= gorevler.length;
+					//console.log("eleman sayısı: "+gorevler.length);
+	if(gorev_sayisi!=0){
+		for(var i=0;i<gorev_sayisi;i++){
+			$(".gorev_liste").append("<span class='todo'><input type='checkbox' id='check'>" + gorevler[i] + " </span><br><br>" );		
+	}
+}
+
+	   $("#buton").prop('disabled', true);
+
+		$("#buton").click(function(){
+		
+			var gorev=$("#gorev").val();
+			gorevler.push(gorev);
+			console.log(gorevler);
+			
+			$("#gorev").val("");
+			$(".gorev_liste").append("<span class='todo'><input type='checkbox' id='check'>"+ gorev +  " </span><br><br>" );
+			$("#buton").prop('disabled', true);	
+
+
+			window.localStorage.setItem("gorevler",JSON.stringify(gorevler));
+
+	});
+	
+
+
+	$('body').on("click",".todo",function(e){
+		$(e.target).toggleClass("tamamlanmis-gorev");
+	//	$("#check").prop('checked',true);
+	});
+
+	
+});
+
+
+
+	
+
+</script>
+</body>
+
+
+</html>
